@@ -18,8 +18,7 @@ import com.nickdferrara.ui_android_fitnessapp.ui.theme.UiandroidfitnessappTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdgeScreenLayout()
-
+        enableEdgeToEdge()
         setContent {
             UiandroidfitnessappTheme {
                 val navController = rememberNavController()
@@ -28,18 +27,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun enableEdgeToEdgeScreenLayout() {
-        enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.light(
-                android.graphics.Color.TRANSPARENT,
-                android.graphics.Color.TRANSPARENT
-            ),
-            navigationBarStyle = SystemBarStyle.light(
-                android.graphics.Color.TRANSPARENT,
-                android.graphics.Color.TRANSPARENT
-            )
-        )
-    }
 }
 
 
