@@ -20,9 +20,11 @@ fun NavigationGraph(
     navController: NavHostController,
     innerPadding: PaddingValues
 ) {
-    NavHost(navController,
+    NavHost(
+        navController = navController,
         startDestination = Screen.Home.route,
-        Modifier.padding(innerPadding)) {
+        modifier = Modifier.padding(innerPadding)
+    ) {
         composable(Screen.Home.route) { HomeScreen(navController = navController) }
         composable(Screen.Workout.route) { WorkoutScreen(navController = navController) }
         composable(Screen.Store.route) { StoreScreen(navController = navController) }
