@@ -13,11 +13,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -39,6 +43,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.nickdferrara.ui_android_fitnessapp.R
+import com.nickdferrara.ui_android_fitnessapp.data.models.Workout
+import com.nickdferrara.ui_android_fitnessapp.ui.navigation.Screen
+import com.nickdferrara.ui_android_fitnessapp.util.findMockUpcomingWorkouts
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -49,44 +56,46 @@ fun HomeScreen(
 ) {
     val sdf = SimpleDateFormat("EEEE, LLLL dd")
     val currentDate = sdf.format(Date())
-    val state = rememberScrollState()
+    val upcomingWorkouts = findMockUpcomingWorkouts()
 
     Column(
         modifier = Modifier
             .padding(20.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            WelcomeMessage("Nicholas")
-            FitifyProfileImage(
-                drawableResource = R.drawable.profile_image,
-                description = "Profile Image"
-            )
-        }
-        Text(
-            text = "Today is $currentDate",
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.secondary
-        )
+        WelcomeSection("Nicholas", currentDate)
         Spacer(modifier = Modifier.height(32.dp))
         HealthConnectCard()
         Spacer(modifier = Modifier.height(24.dp))
-        UpcomingWorkouts()
+        UpcomingWorkoutSection(upcomingWorkouts)
     }
 }
 
 @Composable
-private fun WelcomeMessage(
-    name: String
+private fun WelcomeSection(
+    firstName: String,
+    currentDate: String?
 ) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Text(
+            text = "Welcome $firstName",
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold
+        )
+        FitifyProfileImage(
+            drawableResource = R.drawable.profile_image,
+            description = "Profile Image"
+        )
+    }
     Text(
-        text = "Welcome $name",
-        style = MaterialTheme.typography.headlineMedium,
-        fontWeight = FontWeight.Bold
+        text = "Today is $currentDate",
+        style = MaterialTheme.typography.bodyLarge,
+        color = MaterialTheme.colorScheme.secondary
     )
 }
 
@@ -158,8 +167,16 @@ fun HealthConnectCard() {
 }
 
 @Composable
-fun UpcomingWorkouts(
+fun UpcomingWorkoutSection(
+    upcomingWorkouts: List<Workout>
 ) {
+    UpcomingWorkoutsHeader()
+    Spacer(Modifier.height(16.dp))
+    WorkoutCards(upcomingWorkouts)
+}
+
+@Composable
+private fun UpcomingWorkoutsHeader() {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -178,13 +195,22 @@ fun UpcomingWorkouts(
             textDecoration = TextDecoration.Underline
         )
     }
-    Spacer(Modifier.height(16.dp))
-    Workouts()
 }
 
 @Composable
-fun Workouts(
+fun WorkoutCards(
+    upcomingWorkouts: List<Workout>
+) {
+    UpcomingWorkoutCard(upcomingWorkout = upcomingWorkouts[0])
+    Spacer(modifier = Modifier.height(10.dp))
+    UpcomingWorkoutCard(upcomingWorkout = upcomingWorkouts[1])
+    Spacer(modifier = Modifier.height(10.dp))
+    UpcomingWorkoutCard(upcomingWorkout = upcomingWorkouts[2])
+}
 
+@Composable
+fun UpcomingWorkoutCard(
+    upcomingWorkout: Workout
 ) {
     Card (
         colors = CardDefaults.cardColors(
@@ -198,10 +224,12 @@ fun Workouts(
             modifier = Modifier.fillMaxSize()
         ) {
             Image(
-                painter = painterResource(R.drawable.spin_class),
+                painter = painterResource(upcomingWorkout.image),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                colorFilter = ColorFilter.tint(Color.Gray, blendMode = BlendMode.Multiply),
+                colorFilter = ColorFilter.tint(Color.Gray,
+                    blendMode = BlendMode.Multiply
+                ),
                 modifier = Modifier.fillMaxSize()
             )
             Column(
@@ -212,7 +240,7 @@ fun Workouts(
             )
             {
                 Text(
-                    text = "Spin + Recovery",
+                    text = upcomingWorkout.description,
                     style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier.padding(start = 8.dp),
                     fontWeight = FontWeight.Bold,
@@ -222,17 +250,57 @@ fun Workouts(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp)
+                        .padding(4.dp)
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.clock_icon),
-                        contentDescription = "Close Health Connect Icon",
+                        contentDescription = "Time Icon",
                         tint = Color.White,
                         modifier = Modifier
                             .size(16.dp)
                     )
                     Text(
-                        text = "45 Minutes",
+                        text = "${upcomingWorkout.duration} Minutes",
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(start = 8.dp),
+                        color = Color.White
+                    )
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.AccountCircle,
+                        contentDescription = "Coach Icon",
+                        tint = Color.White,
+                        modifier = Modifier
+                            .size(16.dp)
+                    )
+                    Text(
+                        text = upcomingWorkout.coach,
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(start = 8.dp),
+                        color = Color.White
+                    )
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.DateRange,
+                        contentDescription = "Coach Icon",
+                        tint = Color.White,
+                        modifier = Modifier
+                            .size(16.dp)
+                    )
+                    Text(
+                        text = "Saturday October 19th",
                         style = MaterialTheme.typography.titleMedium,
                         modifier = Modifier.padding(start = 8.dp),
                         color = Color.White
