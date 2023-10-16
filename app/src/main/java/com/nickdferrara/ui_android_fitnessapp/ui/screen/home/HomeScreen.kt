@@ -13,11 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Clear
@@ -44,7 +40,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.nickdferrara.ui_android_fitnessapp.R
 import com.nickdferrara.ui_android_fitnessapp.data.models.Workout
-import com.nickdferrara.ui_android_fitnessapp.ui.navigation.Screen
 import com.nickdferrara.ui_android_fitnessapp.util.findMockUpcomingWorkouts
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -58,14 +53,10 @@ fun HomeScreen(
     val currentDate = sdf.format(Date())
     val upcomingWorkouts = findMockUpcomingWorkouts()
 
-    Column(
-        modifier = Modifier
-            .padding(20.dp)
-            .verticalScroll(rememberScrollState())
-    ) {
+    Column {
         WelcomeSection("Nicholas", currentDate)
-        Spacer(modifier = Modifier.height(32.dp))
-        HealthConnectCard()
+        Spacer(modifier = Modifier.height(24.dp))
+        HealthMetricsSection()
         Spacer(modifier = Modifier.height(24.dp))
         UpcomingWorkoutSection(upcomingWorkouts)
     }
@@ -113,6 +104,12 @@ fun FitifyProfileImage(
         painter = painterResource(id = drawableResource),
         contentDescription = description,
     )
+}
+
+@Composable
+fun HealthMetricsSection() {
+    HealthConnectCard()
+
 }
 
 @Composable
