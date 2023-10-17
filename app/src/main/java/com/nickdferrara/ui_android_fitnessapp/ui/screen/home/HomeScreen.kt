@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Clear
@@ -26,6 +28,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,8 +39,10 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.nickdferrara.ui_android_fitnessapp.R
 import com.nickdferrara.ui_android_fitnessapp.data.models.Workout
@@ -52,9 +58,19 @@ fun HomeScreen(
     val sdf = SimpleDateFormat("EEEE, LLLL dd")
     val currentDate = sdf.format(Date())
     val upcomingWorkouts = findMockUpcomingWorkouts()
+    val openDialog = remember { mutableStateOf(false) }
 
     Column {
-        WelcomeSection("Nicholas", currentDate)
+        WelcomeSection("Nicholas", currentDate) {
+            openDialog.value = true
+        }
+
+        if (openDialog.value) {
+            DisplayUserSettingsDialog {
+                openDialog.value = false
+            }
+        }
+
         Spacer(modifier = Modifier.height(24.dp))
         HealthMetricsSection()
         Spacer(modifier = Modifier.height(24.dp))
@@ -65,7 +81,8 @@ fun HomeScreen(
 @Composable
 private fun WelcomeSection(
     firstName: String,
-    currentDate: String?
+    currentDate: String?,
+    onUserSettingsRequest: () -> Unit,
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -80,7 +97,9 @@ private fun WelcomeSection(
         )
         FitifyProfileImage(
             drawableResource = R.drawable.profile_image,
-            description = "Profile Image"
+            description = "Profile Image",
+            onUserSettingsRequest = { onUserSettingsRequest()}
+
         )
     }
     Text(
@@ -94,13 +113,14 @@ private fun WelcomeSection(
 fun FitifyProfileImage(
     drawableResource: Int,
     description: String,
+    onUserSettingsRequest: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Image(
         modifier = modifier
             .size(40.dp)
             .clip(CircleShape)
-            .clickable {},
+            .clickable { onUserSettingsRequest() },
         painter = painterResource(id = drawableResource),
         contentDescription = description,
     )
@@ -304,6 +324,29 @@ fun UpcomingWorkoutCard(
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun DisplayUserSettingsDialog(
+    onDismissRequest: () -> Unit
+) {
+    Dialog(onDismissRequest = { onDismissRequest() }) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .padding(16.dp),
+            shape = RoundedCornerShape(16.dp),
+        ) {
+            Text(
+                text = "User settings coming soon...",
+                modifier = Modifier
+                    .fillMaxSize()
+                    .wrapContentSize(Alignment.Center),
+                textAlign = TextAlign.Center,
+            )
         }
     }
 }
