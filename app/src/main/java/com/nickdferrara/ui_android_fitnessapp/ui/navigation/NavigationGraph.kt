@@ -29,5 +29,6 @@ fun NavigationGraph(
         composable(Screen.Home.route) { HomeScreen(navController = navController) }
         composable(Screen.Workout.route) { WorkoutScreen(navController = navController) }
         composable(Screen.Store.route) { StoreScreen(navController = navController) }
+        composable(Screen.Settings.route) { StoreScreen(navController = navController) }
     }
 }

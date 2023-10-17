@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -25,6 +24,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -66,9 +67,10 @@ fun HomeScreen(
         }
 
         if (openDialog.value) {
-            DisplayUserSettingsDialog {
-                openDialog.value = false
-            }
+            DisplayUserSettingsDialog(
+                onSettingsScreenRequest = { navController.navigate(route = "settings_screen") },
+                onDismissRequest = {openDialog.value = false}
+            )
         }
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -99,7 +101,6 @@ private fun WelcomeSection(
             drawableResource = R.drawable.profile_image,
             description = "Profile Image",
             onUserSettingsRequest = { onUserSettingsRequest()}
-
         )
     }
     Text(
@@ -129,7 +130,6 @@ fun FitifyProfileImage(
 @Composable
 fun HealthMetricsSection() {
     HealthConnectCard()
-
 }
 
 @Composable
@@ -330,23 +330,48 @@ fun UpcomingWorkoutCard(
 
 @Composable
 fun DisplayUserSettingsDialog(
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
+    onSettingsScreenRequest: () -> Unit
 ) {
-    Dialog(onDismissRequest = { onDismissRequest() }) {
+    Dialog(onDismissRequest = { onDismissRequest() },) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
-                .padding(16.dp),
+                .height(200.dp),
             shape = RoundedCornerShape(16.dp),
         ) {
-            Text(
-                text = "User settings coming soon...",
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxSize()
-                    .wrapContentSize(Alignment.Center),
-                textAlign = TextAlign.Center,
-            )
+            ) {
+                Text(
+                    text = stringResource(id = R.string.app_name),
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(bottom = 16.dp, top = 16.dp)
+                )
+                Row(
+                ) {
+                    FitifyProfileImage(
+                        drawableResource = R.drawable.profile_image,
+                        description = "Profile Image",
+                        onUserSettingsRequest = {},
+                        modifier = Modifier.padding(end = 16.dp)
+                    )
+                    Column {
+                        Text(text = "Nicholas Ferrara")
+                        Text(text = "nicholas.ferrara@gmail.com")
+                    }
+                }
+                OutlinedButton(
+                    onClick = { onSettingsScreenRequest() },
+                    modifier = Modifier.padding(top = 20.dp)
+                ) {
+                    Text("Mange your Fitify Account")
+                }
+            }
         }
     }
 }
