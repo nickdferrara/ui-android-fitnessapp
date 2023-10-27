@@ -7,16 +7,22 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.ui.graphics.vector.ImageVector
 
-sealed class Screen(val route: String, val icon: ImageVector, var title: String) {
+sealed class Screen(
+    val route: String,
+    val icon: ImageVector,
+    var title: String
+) {
+
     object Home: Screen(
         route = "home_screen",
         icon = Icons.Filled.Home,
         title ="Home"
     )
+
     object Workout: Screen(
         route = "workout_screen",
         icon = Icons.Filled.DateRange,
-        title = "Workouts"
+        title = "Book"
     )
 
     object Store: Screen(

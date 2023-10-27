@@ -201,7 +201,7 @@ private fun UpcomingWorkoutsHeader() {
             .fillMaxWidth()
     ) {
         Text(
-            text = "Upcoming Workouts",
+            text = "Your Upcoming Workouts",
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold
         )

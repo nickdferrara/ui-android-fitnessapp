@@ -24,7 +24,7 @@ fun NavigationGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Home.route
+        startDestination = Screen.Workout.route
     ) {
         composable(Screen.Home.route) { HomeScreen(navController = navController) }
         composable(Screen.Workout.route) { WorkoutScreen(navController = navController) }
