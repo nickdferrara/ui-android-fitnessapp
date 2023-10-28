@@ -20,14 +20,31 @@ import com.nickdferrara.ui_android_fitnessapp.ui.screen.workout.WorkoutScreen
 
 @Composable
 fun NavigationGraph(
-    navController: NavHostController
+    navController: NavHostController,
+    innerPadding: PaddingValues
 ) {
     NavHost(
         navController = navController,
         startDestination = Screen.Workout.route
     ) {
-        composable(Screen.Home.route) { HomeScreen(navController = navController) }
-        composable(Screen.Workout.route) { WorkoutScreen(navController = navController) }
+        composable(
+            Screen.Home.route
+        ) {
+            HomeScreen(
+            navController = navController,
+            innerPadding = innerPadding
+            )
+        }
+
+        composable(
+            Screen.Workout.route
+        ) {
+            WorkoutScreen(
+                navController = navController,
+                innerPadding = innerPadding
+            )
+        }
+
         composable(Screen.Store.route) { StoreScreen(navController = navController) }
         composable(Screen.Settings.route) { StoreScreen(navController = navController) }
     }
