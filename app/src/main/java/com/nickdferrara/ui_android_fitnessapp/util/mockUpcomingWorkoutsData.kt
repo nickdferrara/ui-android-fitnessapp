@@ -29,6 +29,78 @@ fun findMockUpcomingWorkouts(): List<Workout> {
             coach = "Lindsay Sargood",
             duration = 45,
             image = R.drawable.spin_class
+        ),
+        Workout(
+            description = "Spin + Recovery",
+            capacity = 20,
+            startDateTime = LocalDateTime.now(),
+            coach = "Amanda Ferrara",
+            duration = 45,
+            image = R.drawable.spin_class
+        ),
+        Workout(
+            description = "Yoga + Sculpt",
+            capacity = 22,
+            startDateTime = LocalDateTime.now(),
+            coach = "Amanda Ferrara",
+            duration = 30,
+            image = R.drawable.yoga_class
+        ),
+        Workout(
+            description = "Cycle + Core",
+            capacity = 22,
+            startDateTime = LocalDateTime.now(),
+            coach = "Lindsay Sargood",
+            duration = 45,
+            image = R.drawable.spin_class
+        ),
+        Workout(
+            description = "Spin + Recovery",
+            capacity = 20,
+            startDateTime = LocalDateTime.now(),
+            coach = "Amanda Ferrara",
+            duration = 45,
+            image = R.drawable.spin_class
+        ),
+        Workout(
+            description = "Yoga + Sculpt",
+            capacity = 22,
+            startDateTime = LocalDateTime.now(),
+            coach = "Amanda Ferrara",
+            duration = 30,
+            image = R.drawable.yoga_class
+        ),
+        Workout(
+            description = "Cycle + Core",
+            capacity = 22,
+            startDateTime = LocalDateTime.now(),
+            coach = "Lindsay Sargood",
+            duration = 45,
+            image = R.drawable.spin_class
+        ),
+        Workout(
+            description = "Spin + Recovery",
+            capacity = 20,
+            startDateTime = LocalDateTime.now(),
+            coach = "Amanda Ferrara",
+            duration = 45,
+            image = R.drawable.spin_class
+        ),
+        Workout(
+            description = "Yoga + Sculpt",
+            capacity = 22,
+            startDateTime = LocalDateTime.now(),
+            coach = "Amanda Ferrara",
+            duration = 30,
+            image = R.drawable.yoga_class
+        ),
+        Workout(
+            description = "Cycle + Core",
+            capacity = 22,
+            startDateTime = LocalDateTime.now(),
+            coach = "Lindsay Sargood",
+            duration = 45,
+            image = R.drawable.spin_class
         )
     )
 }

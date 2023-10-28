@@ -35,12 +35,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.nickdferrara.ui_android_fitnessapp.data.models.Workout
 import com.nickdferrara.ui_android_fitnessapp.util.findLastSeveDays
 import com.nickdferrara.ui_android_fitnessapp.util.findMockUpcomingWorkouts
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun WorkoutScreen(
@@ -64,19 +66,48 @@ fun WorkoutScreen(
 
 @Composable
 fun ScheduledWorkoutSection(
-    workouts: List<Workout>
+    workouts: List<Workout>,
+    modifier: Modifier = Modifier
+        .padding(start = 20.dp, end = 20.dp)
 ) {
-    LazyColumn {
-        items(workouts) { message ->
-
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = modifier
+    ) {
+        items(workouts) { workout ->
+            WorkoutItem(workout = workout)
         }
     }
 }
 
 @Composable
 fun WorkoutItem(workout: Workout) {
-    Column {
-        Text(text = "${workout.description}")
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(end = 20.dp)
+        ) {
+            Text(
+                text = "${workout.startDateTime.format(DateTimeFormatter.ofPattern("hh:mm"))}",
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "${workout.startDateTime.format(DateTimeFormatter.ofPattern("a"))}",
+                fontWeight = FontWeight.Bold,
+            )
+        }
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(90.dp)
+                .width(120.dp)
+        ) {
+
+        }
+
     }
 }
 
@@ -139,7 +170,6 @@ fun DayCarouselSection(
                     )
                 }
             }
-
         }
     }
 }
@@ -173,7 +203,6 @@ fun TopToolbar(
                     contentDescription = "Profile Icon"
                 )
             }
-
         }
     }
 }
